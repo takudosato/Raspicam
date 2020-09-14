@@ -28,7 +28,16 @@ public class BleInterface {
      */
     public DeviceSettingData getDeviceSetting() {
         Log.d("BleInterface", "getDeviceSetting");
-        return new DeviceSettingData();
+
+        DeviceSettingData data = new DeviceSettingData();
+        if (data == null) {
+            return null;
+        }
+
+        data.mdeviceName = "test";
+        data.measurementMode = 2;
+
+        return data;
     }
 
     /**

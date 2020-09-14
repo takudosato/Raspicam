@@ -1,6 +1,7 @@
 package com.example.raspicam.data;
 
 public class DeviceSettingData {
-    String mdeviceName = ""; //デバイス固有情報
-    int measurementMode; //測定モード
+
+    public String mdeviceName = ""; //デバイス固有情報
+    public int measurementMode; //測定モード
 }
