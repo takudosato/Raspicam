@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     BleInterface bleinterface = new BleInterface();
 
+    //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
