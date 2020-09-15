@@ -34,8 +34,17 @@ public class BleInterface {
             return null;
         }
 
-        data.mdeviceName = "test";
-        data.measurementMode = 2;
+        //測定モード
+        data.measurementMode = DeviceSettingData.MEASURE_WRIST_MODE;
+
+        //顔検出
+        data.facedetection = true;
+
+        //キャリブレーション
+        data.calibration = -1.5;
+
+        //高温閾値
+        data.hightemperaturethreshold = 40.3;
 
         return data;
     }
