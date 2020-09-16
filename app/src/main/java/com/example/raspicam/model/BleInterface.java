@@ -56,7 +56,11 @@ public class BleInterface {
      * @return 設定に成功したか
      */
     public int setDeviceSetting(DeviceSettingData deviceSettingData) {
-        Log.d("BleInterface", "setDeviceSetting");
+        Log.d("deviceSettingData", "測定モード: " + String.valueOf(deviceSettingData.measurementMode));
+        Log.d("deviceSettingData", "顔検出: " + String.valueOf(deviceSettingData.facedetection));
+        Log.d("deviceSettingData", "キャリブレーション: " + String.valueOf(deviceSettingData.calibration));
+        Log.d("deviceSettingData", "高温閾値: " + String.valueOf(deviceSettingData.hightemperaturethreshold));
+
         return 0;
     }
 }

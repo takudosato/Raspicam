@@ -1,120 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.DeviceSettingActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RadioGroup
-        android:id="@+id/rg_measurement_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+    <data>
+        <variable
+            name="vm"
+            type="com.example.raspicam.viewmodel.DeviceSettingViewModel" />
+    </data>
 
-        <RadioButton
-            android:id="@+id/rb_measurementmode_face"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:checked="true"
-            android:text="顔" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.DeviceSettingActivity">
 
-        <RadioButton
-            android:id="@+id/rb_measurementmode_wrist"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="手首" />
+        <RadioGroup
+            android:id="@+id/rg_measurement_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_measurementmode_face"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:onClick="@{()->vm.onMeasurementModeClicked(vm.ldsettingdata.MEASURE_FACE_MODE)}"
+                android:text="顔" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="測定モード"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <RadioButton
+                android:id="@+id/rb_measurementmode_wrist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{()->vm.onMeasurementModeClicked(vm.ldsettingdata.MEASURE_WRIST_MODE)}"
+                android:text="手首" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="顔検出"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_measurement_mode" />
-
-    <Switch
-        android:id="@+id/sw_facedetection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="16dp"
-        android:checked="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/rg_measurement_mode" />
-
-    <LinearLayout
-        android:layout_width="388dp"
-        android:layout_height="456dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sw_facedetection">
-
+        </RadioGroup>
 
         <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="測定モード"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="キャリブレーション"
-            android:textSize="10dp" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="顔検出"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rg_measurement_mode" />
 
-        <NumberPicker
-            android:id="@+id/np_calibration"
+        <Switch
+            android:id="@+id/sw_facedetection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="16dp"
+            android:checked="false"
+            android:onCheckedChanged="@{(switch, checked) -> vm.onCheckedChanged(checked)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/rg_measurement_mode"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-        <TextView
+        <LinearLayout
+            android:layout_width="388dp"
+            android:layout_height="456dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.555"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sw_facedetection">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="キャリブレーション"
+                android:textSize="10sp" />
+
+            <NumberPicker
+                android:id="@+id/np_calibration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onValueChange="@{(picker,oldv,newv) -> vm.onCalibrationChange(oldv, newv)}"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="高温閾値"
+                android:textSize="10dp" />
+
+            <NumberPicker
+                android:id="@+id/np_hightemperaturethreshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_set"
+            android:text="セット"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="高温閾値"
-            android:textSize="10dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{()->vm.onSettingClick()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <NumberPicker
-            android:id="@+id/np_hightemperaturethreshold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/btn_set"
-        android:text="セット"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
