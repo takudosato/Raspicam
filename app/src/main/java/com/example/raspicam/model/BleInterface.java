@@ -7,6 +7,8 @@ import com.example.raspicam.data.ScanDeviceData;
 
 import java.util.ArrayList;
 
+import static android.os.SystemClock.sleep;
+
 public class BleInterface {
 
     /**
@@ -16,8 +18,23 @@ public class BleInterface {
      * @return　検出されたデバイスのリスト
      */
     public ArrayList<ScanDeviceData> getDeviceList(String filteringStr, int scanmsc) {
-        Log.d("BleInterface", "getDeviceList");
+        Log.d("BleInterface", "getDeviceList start");
         ArrayList<ScanDeviceData> list = null;
+
+        for(int n=0; n<100 ;n++) {
+            Log.d("roop", String.valueOf(n));
+        }
+
+        list = new ArrayList<ScanDeviceData>();
+
+        ScanDeviceData test = new ScanDeviceData();
+
+        test.mdeviceName = "list1";
+        list.add(test);
+        test.mdeviceName = "list2";
+        list.add(test);
+
+        Log.d("BleInterface", "getDeviceList end");
         return list;
     }
 

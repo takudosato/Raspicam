@@ -3,6 +3,7 @@ package com.example.raspicam.view;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,9 +14,42 @@ import com.example.raspicam.model.BleInterface;
 
 import java.util.ArrayList;
 
+import static android.os.SystemClock.sleep;
+
 public class MainActivity extends AppCompatActivity {
 
     BleInterface bleinterface = new BleInterface();
+    ArrayList<ScanDeviceData> list;
+
+    DeviceSettingData devicesetting = new DeviceSettingData();
+
+    private void getDeviceListThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = bleinterface.getDeviceList("",0);
+            }
+        }).start();
+    }
+
+    private void getDeviceSettingThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                devicesetting = bleinterface.getDeviceSetting();
+            }
+        }).start();
+    }
+
+    private void setDeviceSettingThread() {
+        devicesetting = new DeviceSettingData();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                bleinterface.setDeviceSetting(devicesetting);
+            }
+        }).start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         btn_getlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<ScanDeviceData> list = new ArrayList<ScanDeviceData>();
-                list = bleinterface.getDeviceList("",0);
+                getDeviceListThread();
+                Log.d("mainthread","戻っているかな？");
             }
         });
 
@@ -37,8 +71,7 @@ public class MainActivity extends AppCompatActivity {
         btn_getSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DeviceSettingData devicesetting = new DeviceSettingData();
-                devicesetting = bleinterface.getDeviceSetting();
+                getDeviceSettingThread();
             }
         });
 
@@ -47,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
         btn_setSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DeviceSettingData devicesetting = new DeviceSettingData();
-                bleinterface.setDeviceSetting(devicesetting);
+                setDeviceSettingThread();
             }
         });
     }
