@@ -1,16 +1,12 @@
 package com.example.raspicam.viewmodel;
 
-import android.util.Log;
-import android.widget.NumberPicker;
-import android.widget.RadioGroup;
-
-import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.raspicam.data.DeviceSettingData;
 import com.example.raspicam.data.NumberPickerData;
+import com.example.raspicam.data.ScanDeviceData;
 import com.example.raspicam.model.BleInterface;
+import java.util.ArrayList;
 
 public class DeviceSettingViewModel extends ViewModel {
 
@@ -22,6 +18,9 @@ public class DeviceSettingViewModel extends ViewModel {
 
     public DeviceSettingData settingdata;
     public MutableLiveData<DeviceSettingData> ldsettingdata;
+
+    private ArrayList<ScanDeviceData> scandevicelist;
+    private MutableLiveData<ArrayList<ScanDeviceData>> ldscandevicelist;
 
     /**
      * コンストラクタ
@@ -46,6 +45,16 @@ public class DeviceSettingViewModel extends ViewModel {
         if(settingdata == null) {
             System.exit(0);
         }
+
+        scandevicelist = new ArrayList<ScanDeviceData>();
+        if(scandevicelist == null) {
+            System.exit(0);
+        }
+
+        ldscandevicelist = new MutableLiveData<>();
+        if(ldscandevicelist == null) {
+            System.exit(0);
+        }
     }
 
     /**
@@ -54,7 +63,7 @@ public class DeviceSettingViewModel extends ViewModel {
      */
     public MutableLiveData<DeviceSettingData> getDeviceSettingData() {
         //BLEクラスからデバイス設定情報を取得する
-        settingdata = bleinterface.getDeviceSetting();
+        settingdata = bleinterface.getDeviceSetting(settingdata.mdeviceName);
         if (settingdata != null) {
             ldsettingdata.postValue(settingdata);
         }
@@ -64,10 +73,10 @@ public class DeviceSettingViewModel extends ViewModel {
      /**
      * 現在のデバイス情報を取得する
      */
-    public void dispDeviceData() {
+    public void dispDeviceData(String deviceName) {
 
         //BLEクラスからデバイス設定情報を取得する
-        settingdata = bleinterface.getDeviceSetting();
+        settingdata = bleinterface.getDeviceSetting(deviceName);
         if (settingdata != null) {
             ldsettingdata.postValue(settingdata);
         }
@@ -85,7 +94,7 @@ public class DeviceSettingViewModel extends ViewModel {
      * 設定ボタン押下時の処理
      */
     public void onSettingClick() {
-        //BLEクラスからデバイス設定情報を取得する
+        //BLEクラスを通じ、デバイス設定情報を設定する
         bleinterface.setDeviceSetting(ldsettingdata.getValue());
     }
 
@@ -117,9 +126,10 @@ public class DeviceSettingViewModel extends ViewModel {
         ldsettingdata.postValue(settingdata);
     }
 
-
-
-
+    public void onHightTempTresholdCnage(int oldv, int newv) {
+        settingdata.hightemperaturethreshold = npdata.getHighTemperatureThresholdNPIndexDoublenum(newv);
+        ldsettingdata.postValue(settingdata);
+    }
 
     public int getCalibralinNPMaxvalue() {
         return npdata.getCalibralinNPMaxvalue();
@@ -145,4 +155,26 @@ public class DeviceSettingViewModel extends ViewModel {
         return npdata.getHighTemperatureThresholdNPIndexOf(settingdata.hightemperaturethreshold);
     }
 
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * LiveDataによるデバイスリスト情報を返す
+     * @return
+     */
+    public MutableLiveData<ArrayList<ScanDeviceData>> getScanDeviceList() {
+        scandevicelist = bleinterface.getDeviceList("",3000);
+        if (scandevicelist != null) {
+            ldscandevicelist.postValue(scandevicelist);
+        }
+        return ldscandevicelist;
+    }
+
+    /**
+     * リストをクリックされたので、その位置のデバイス情報を取得する
+     * @param position
+     */
+    public void clickDevice(int position) {
+        ScanDeviceData selectdata = scandevicelist.get(position);
+        dispDeviceData(selectdata.mdeviceName);
+    }
 }

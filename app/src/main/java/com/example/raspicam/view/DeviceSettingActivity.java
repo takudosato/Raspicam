@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +28,6 @@ import java.util.List;
 
 public class DeviceSettingActivity extends AppCompatActivity {
 
-
     DeviceSettingViewModel viewmodel = null;
 
     //キャリブレーションNumberPicker
@@ -39,6 +40,10 @@ public class DeviceSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_device_setting);
+
+
+        Intent intent = new Intent(getApplication(), ScanDeviceListActivity.class);
+        startActivity(intent);
 
         //ViewModel
         viewmodel = new ViewModelProvider(this).get(DeviceSettingViewModel.class);
@@ -122,12 +127,12 @@ public class DeviceSettingActivity extends AppCompatActivity {
     private void getBleAccress() {
 
         //ペアリングされているデバイスがなければ、検出処理に移動
+        String pareDevice = "ahoaho";
 
         //ペアリングされているデバイスの情報を取得する
         if(viewmodel != null) {
-            viewmodel.dispDeviceData();
+            viewmodel.dispDeviceData(pareDevice);
         }
     }
-
 
 }

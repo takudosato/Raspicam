@@ -17,7 +17,17 @@ public class BleInterface {
      */
     public ArrayList<ScanDeviceData> getDeviceList(String filteringStr, int scanmsc) {
         Log.d("BleInterface", "getDeviceList");
-        ArrayList<ScanDeviceData> list = null;
+        ArrayList<ScanDeviceData> list = new ArrayList<ScanDeviceData>();
+        ScanDeviceData data = new ScanDeviceData();
+        data.mdeviceName = "name11";
+        data.macAddress = "address11";
+        list.add(data);
+
+        ScanDeviceData data2 = new ScanDeviceData();
+        data2.mdeviceName = "name22";
+        data2.macAddress = "address22";
+        list.add(data2);
+
         return list;
     }
 
@@ -26,8 +36,8 @@ public class BleInterface {
      * 任意のデバイスの指定方法は未定
      * @return　現在のデバイスの設定値。設定に失敗したらnull
      */
-    public DeviceSettingData getDeviceSetting() {
-        Log.d("BleInterface", "getDeviceSetting");
+    public DeviceSettingData getDeviceSetting(String deviceName) {
+        Log.d("getDeviceSetting", deviceName);
 
         DeviceSettingData data = new DeviceSettingData();
         if (data == null) {

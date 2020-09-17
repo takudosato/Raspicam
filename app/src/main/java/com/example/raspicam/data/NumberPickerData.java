@@ -97,4 +97,10 @@ public class NumberPickerData {
         List<String> list = Arrays.asList(np_hightemperaturethreshold_list); //配列をList型オブジェクトに変換
         return list.indexOf(strht);
     }
+
+    public double getHighTemperatureThresholdNPIndexDoublenum(int index) {
+        //indexの位置の文字列を取得する＝ユーザが設定した値
+        String str = np_hightemperaturethreshold_list[index];
+        return Double.parseDouble(str);
+    }
 }

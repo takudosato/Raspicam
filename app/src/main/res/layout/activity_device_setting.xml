@@ -116,6 +116,7 @@
                 android:id="@+id/np_hightemperaturethreshold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onValueChange="@{(picker,oldv,newv) -> vm.onHightTempTresholdCnage(oldv, newv)}"
                 android:layout_gravity="center" />
 
         </LinearLayout>

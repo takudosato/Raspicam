@@ -1,5 +1,6 @@
 package com.example.raspicam.data;
 
 public class ScanDeviceData {
-    String mdeviceName = "";
+    public String mdeviceName = "";
+    public String macAddress = "";
 }

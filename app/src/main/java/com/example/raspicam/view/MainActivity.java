@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 DeviceSettingData devicesetting = new DeviceSettingData();
-                devicesetting = bleinterface.getDeviceSetting();
+                devicesetting = bleinterface.getDeviceSetting("");
             }
         });
 
