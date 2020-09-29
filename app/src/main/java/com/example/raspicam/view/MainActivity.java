@@ -2,7 +2,14 @@ package com.example.raspicam.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.ScanResult;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +20,7 @@ import com.example.raspicam.data.ScanDeviceData;
 import com.example.raspicam.model.BleInterface;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import static android.os.SystemClock.sleep;
 
@@ -23,13 +31,31 @@ public class MainActivity extends AppCompatActivity {
 
     DeviceSettingData devicesetting = new DeviceSettingData();
 
+
+//    BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+ //   BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+
     private void getDeviceListThread() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 list = bleinterface.getDeviceList("",0);
+
+                Handler mainThreadHandler = new Handler(Looper.getMainLooper());
+                mainThreadHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //メインスレッドで実行する処理
+                        Set<ScanResult> set = bleinterface.getlisttest();
+                        Log.d("set",set.toString());
+                        //Log.d(list.get(0).mdeviceName, "Getttttttttttttttttttttttttttttttttttttt!");
+                    }
+                });
             }
         }).start();
+
+        //終了を受け取る
+
     }
 
     private void getDeviceSettingThread() {
@@ -49,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 bleinterface.setDeviceSetting(devicesetting);
             }
         }).start();
+
+
     }
 
     @Override
@@ -56,15 +84,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int REQUEST_ENABLE_BT = 1;
+
         //リスト取得ボタン
         Button btn_getlist = findViewById(R.id.getdevicelist);
         btn_getlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getDeviceListThread();
-                Log.d("mainthread","戻っているかな？");
+
             }
         });
+
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+
+        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(intent, REQUEST_ENABLE_BT);
 
         //デバイスの現在の設定取得
         Button btn_getSetting = findViewById(R.id.getdevicesetting);
@@ -72,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getDeviceSettingThread();
+
             }
         });
 
